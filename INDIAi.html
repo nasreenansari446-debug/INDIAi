@@ -1,427 +1,950 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bharat AI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bharat AI - Professional Indian Assistant</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Highlight.js for beautiful code syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
-<style>
-* { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #ff9933, #ffffff, #138808);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-}
-
-body.dark { background: #121212; }
-
-/* APP CONTAINER */
-
-.app {
-  width: 100%;
-  max-width: 480px;
-  height: 95vh;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-body.dark .app { background: #1e1e1e; color: #f0f0f0; }
-
-/* LANDING PAGE */
-
-.landing {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-}
-
-.landing h1 { font-size: 32px; margin: 0; color: #000080; }
-.landing h2 { margin: 10px 0; font-size: 18px; }
-
-.flag-line {
-  width: 200px;
-  height: 6px;
-  margin: 20px 0;
-  background: linear-gradient(to right, #ff9933, #ffffff, #138808);
-  border-radius: 3px;
-}
-
-.start-btn {
-  margin-top: 30px;
-  padding: 12px 28px;
-  font-size: 16px;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  background: linear-gradient(to right, #ff9933, #138808);
-  color: white;
-  font-weight: 600;
-}
-
-/* CHAT UI */
-
-.chat {
-  flex: 1;
-  display: none;
-  flex-direction: column;
-  height: 100%;
-}
-
-/* TOP BAR */
-
-.topbar {
-  padding: 10px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #e0e0e0;
-  font-weight: 600;
-}
-
-.controls { display: flex; gap: 8px; }
-
-.btn {
-  padding: 6px 10px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  background: #f5f5f5;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-body.dark .btn { background: #333; color: white; border: 1px solid #555; }
-
-/* CHAT AREA */
-
-.messages {
-  flex: 1;
-  padding: 12px;
-  overflow-y: auto;
-  background: #fafafa;
-}
-
-body.dark .messages { background: #121212; }
-
-.bubble {
-  max-width: 85%;
-  padding: 10px 14px;
-  margin: 8px 0;
-  border-radius: 12px;
-  line-height: 1.5;
-  font-size: 15px;
-  white-space: pre-wrap;
-}
-
-.user {
-  background: #e3f2fd;
-  margin-left: auto;
-  border-bottom-right-radius: 2px;
-}
-
-.ai {
-  background: #fff8e1;
-  margin-right: auto;
-  border-bottom-left-radius: 2px;
-}
-
-body.dark .user { background: #263238; color: white; }
-body.dark .ai { background: #2a2a2a; color: white; }
-
-/* INPUT */
-
-.input-area {
-  padding: 10px;
-  border-top: 1px solid #e0e0e0;
-  display: flex;
-  gap: 6px;
-  background: #ffffff;
-}
-
-body.dark .input-area { background: #1e1e1e; border-top: 1px solid #333; }
-
-.input-area input {
-  flex: 1;
-  padding: 10px 12px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  outline: none;
-  font-size: 15px;
-}
-
-.input-area button {
-  padding: 10px 14px;
-  border-radius: 20px;
-  border: none;
-  background: linear-gradient(to right, #ff9933, #138808);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.mic-btn {
-  background: #000080;
-}
-
-/* FLOATING SCROLL BUTTON */
-
-#scrollBtn {
-  position: absolute;
-  bottom: 90px;
-  right: 20px;
-  padding: 10px 12px;
-  border-radius: 50%;
-  border: none;
-  background: #000080;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  display: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-</style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            brand: ['"Space Grotesk"', 'sans-serif'],
+          },
+          colors: {
+            saffron: '#FF9933',
+            navy: '#000080',
+            greenIndia: '#138808',
+            chatgptDark: {
+              sidebar: '#171717',
+              main: '#212121',
+              hover: '#2f2f2f',
+              border: '#424242'
+            },
+            chatgptLight: {
+              sidebar: '#f9f9f9',
+              main: '#ffffff',
+              hover: '#ececec',
+              border: '#e5e7eb'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Smooth custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #8888;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #5555;
+    }
+    /* Typing indicator animation */
+    .dot-flashing {
+      position: relative;
+      width: 6px;
+      height: 6px;
+      border-radius: 5px;
+      background-color: currentColor;
+      animation: dot-flashing 1s infinite linear alternate;
+      animation-delay: .5s;
+    }
+    .dot-flashing::before, .dot-flashing::after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 5px;
+      background-color: currentColor;
+      animation: dot-flashing 1s infinite linear alternate;
+    }
+    .dot-flashing::before {
+      left: -12px;
+      animation-delay: 0s;
+    }
+    .dot-flashing::after {
+      left: 12px;
+      animation-delay: 1s;
+    }
+    @keyframes dot-flashing {
+      0% { background-color: currentColor; }
+      50%, 100% { background-color: rgba(150,150,150,0.2); }
+    }
+    /* Markdown Custom Styling to override raw elements */
+    .prose p { margin-bottom: 0.75rem; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose ul, .prose ol { margin-left: 1.5rem; margin-bottom: 0.75rem; }
+    .prose ul { list-style-type: disc; }
+    .prose ol { list-style-type: decimal; }
+    .prose code { background: rgba(0,0,0,0.1); padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.875em; }
+    .dark .prose code { background: rgba(255,255,255,0.15); }
+    .prose pre { background: #1e1e1e; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 0.75rem; }
+    .prose pre code { background: transparent; padding: 0; color: #f8f8f2; }
+  </style>
 </head>
-<body>
+<body class="h-full bg-chatgptLight-main dark:bg-chatgptDark-main text-slate-800 dark:text-slate-200 transition-colors duration-200 font-sans overflow-hidden">
 
-<div class="app">
+  <!-- MAIN WRAPPER -->
+  <div class="flex h-full w-full overflow-hidden relative">
 
-  <!-- LANDING PAGE -->
-  <div class="landing" id="landing">
-    <h1>MADE IN INDIA</h1>
-    <h2>MADE FOR INDIA</h2>
-    <div class="flag-line"></div>
-    <h2>Classic AI Assistant</h2>
-    <button class="start-btn" onclick="startChat()">Start Bharat AI</button>
+    <!-- SIDEBAR (Desktop: persistent left panel, Mobile: absolute slide-in) -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 flex w-72 flex-col bg-chatgptLight-sidebar dark:bg-chatgptDark-sidebar border-r border-chatgptLight-border dark:border-chatgptDark-border transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out">
+      
+      <!-- Tricolor Premium Top Bar -->
+      <div class="h-[3px] w-full bg-gradient-to-r from-saffron via-white to-greenIndia"></div>
+      
+      <!-- Sidebar Header -->
+      <div class="flex items-center justify-between p-3.5">
+        <div class="flex items-center gap-2">
+          <!-- Beautiful Chakra Emblem Emblem -->
+          <div class="w-8 h-8 rounded-full bg-navy/10 dark:bg-white/10 flex items-center justify-center text-navy dark:text-white relative animate-spin-slow">
+            <svg class="w-6 h-6 text-blue-800 dark:text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2v20M2 12h20M5 5l14 14M5 19L19 5"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-lg font-brand font-bold tracking-wide bg-gradient-to-r from-saffron to-greenIndia bg-clip-text text-transparent">Bharat AI</h1>
+            <span class="text-[10px] text-slate-500 block -mt-1 uppercase tracking-widest font-bold">Made For India</span>
+          </div>
+        </div>
+        
+        <!-- Mobile Sidebar Close Button -->
+        <button onclick="toggleSidebar()" class="lg:hidden p-1.5 rounded-lg hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover text-slate-500 dark:text-slate-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- New Chat Button -->
+      <div class="px-3 py-2">
+        <button onclick="createNewConversation()" class="flex w-full items-center justify-between gap-2 rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm font-semibold hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover transition">
+          <span class="flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
+            New chat
+          </span>
+          <span class="text-xs bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">Ctrl+N</span>
+        </button>
+      </div>
+
+      <!-- Conversation History List -->
+      <div class="flex-1 overflow-y-auto px-3 py-2 space-y-1" id="historyList">
+        <!-- Dynanmic Chat Threads -->
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="p-3 border-t border-chatgptLight-border dark:border-chatgptDark-border space-y-2">
+        
+        <!-- Language Switcher Option -->
+        <button onclick="toggleLang()" class="flex w-full items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover text-slate-600 dark:text-slate-300 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253"></path></svg>
+          <span class="flex-1 text-left">Primary Language: <strong id="langText" class="text-saffron">English</strong></span>
+        </button>
+
+        <!-- Dark/Light Mode Switcher -->
+        <button onclick="toggleDark()" class="flex w-full items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover text-slate-600 dark:text-slate-300 transition">
+          <span class="dark:hidden flex items-center gap-3 w-full">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"></path></svg>
+            <span>Dark mode</span>
+          </span>
+          <span class="hidden dark:flex items-center gap-3 w-full">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21M4.22 4.22l1.58 1.58m12.42 12.42l1.58 1.58M3 12h2.25m13.5 0H21M6.78 17.22l-1.58 1.58m12.42-12.42l1.58 1.58M12 7.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9z"></path></svg>
+            <span>Light mode</span>
+          </span>
+        </button>
+
+        <!-- Settings Button -->
+        <button onclick="toggleSettingsModal()" class="flex w-full items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover text-slate-600 dark:text-slate-300 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <span>Developer Settings</span>
+        </button>
+
+      </div>
+    </aside>
+
+    <!-- MOBILE SIDEBAR BACKDROP -->
+    <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 z-30 bg-slate-900/50 backdrop-blur-sm lg:hidden hidden"></div>
+
+    <!-- MAIN CHAT CONTAINER -->
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-chatgptLight-main dark:bg-chatgptDark-main">
+      
+      <!-- TOP NAVIGATION BAR -->
+      <header class="flex items-center justify-between p-3 border-b border-chatgptLight-border dark:border-chatgptDark-border">
+        <div class="flex items-center gap-3">
+          <!-- Mobile Menu Trigger -->
+          <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover text-slate-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          </button>
+          
+          <!-- Dropdown Model Indicator -->
+          <div class="relative">
+            <button class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold rounded-lg hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover">
+              <span class="text-xs bg-saffron/10 text-saffron px-1.5 py-0.5 rounded font-mono font-bold">Llama-3</span>
+              <span id="currentModelLabel">Bharat AI (Groq Speed)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Top Action Controls -->
+        <div class="flex items-center gap-2">
+          <!-- Clean Conversation Chat -->
+          <button onclick="confirmClearCurrentChat()" title="Reset current chat window" class="p-2 rounded-lg hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover text-slate-500 hover:text-red-500 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+          </button>
+          <!-- Share App (Copies link) -->
+          <button onclick="copyAppUrl()" title="Share Bharat AI" class="p-2 rounded-lg hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover text-slate-500 hover:text-green-600 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 10.742l4.57 2.286M8.684 13.258l4.57-2.286M14.25 15.513a3.25 3.25 0 11-4.715-2.903L14.103 10.3a3.25 3.25 0 111.455 1.583L11.026 14.1a3.24 3.24 0 01.121.73c0 .248-.028.49-.08.723z"></path></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- CHAT MESSAGE VIEWPORT -->
+      <div id="messagesContainer" class="flex-1 overflow-y-auto px-4 md:px-8 py-6 space-y-6">
+        
+        <!-- INTRO LANDING SCREEN (Only shown if current chat has no messages) -->
+        <div id="welcomeScreen" class="h-full flex flex-col justify-center items-center text-center max-w-2xl mx-auto space-y-8 py-10">
+          <div class="relative">
+            <!-- Big Brand Flag Graphic -->
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-saffron via-white to-greenIndia p-[2px] shadow-xl animate-bounce-slow">
+              <div class="w-full h-full bg-slate-50 dark:bg-slate-900 rounded-2xl flex items-center justify-center">
+                <span class="text-3xl">🇮🇳</span>
+              </div>
+            </div>
+            <div class="absolute -bottom-2 -right-2 bg-navy text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Bharat</div>
+          </div>
+
+          <div class="space-y-3">
+            <h2 class="text-3xl md:text-4xl font-brand font-bold tracking-tight">How can I assist you today?</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto">
+              Welcome to the ultimate ChatGPT-styled localized assistant. Ready with quick responses in English and Hindi.
+            </p>
+          </div>
+
+          <!-- Quick Suggestion Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-xl">
+            <button onclick="handleSuggestion('Explain quantum computing in simple terms')" class="flex flex-col text-left p-3.5 rounded-xl border border-chatgptLight-border dark:border-chatgptDark-border hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover transition group">
+              <span class="font-medium text-xs text-slate-400 group-hover:text-saffron transition">Explain complex theories</span>
+              <span class="text-sm mt-1">Explain quantum computing in simple terms</span>
+            </button>
+            <button onclick="handleSuggestion('Write a professional email requesting sick leave')" class="flex flex-col text-left p-3.5 rounded-xl border border-chatgptLight-border dark:border-chatgptDark-border hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover transition group">
+              <span class="font-medium text-xs text-slate-400 group-hover:text-greenIndia transition">Professional Drafting</span>
+              <span class="text-sm mt-1">Write a professional email requesting sick leave</span>
+            </button>
+            <button onclick="handleSuggestion('हिंदी में बताएं कि योग के क्या लाभ हैं?')" class="flex flex-col text-left p-3.5 rounded-xl border border-chatgptLight-border dark:border-chatgptDark-border hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover transition group">
+              <span class="font-medium text-xs text-slate-400 group-hover:text-saffron transition">Local Content</span>
+              <span class="text-sm mt-1">हिंदी में बताएं कि योग के क्या लाभ हैं?</span>
+            </button>
+            <button onclick="handleSuggestion('Write a clean JavaScript function to find a prime number')" class="flex flex-col text-left p-3.5 rounded-xl border border-chatgptLight-border dark:border-chatgptDark-border hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover transition group">
+              <span class="font-medium text-xs text-slate-400 group-hover:text-navy transition">Software Engineering</span>
+              <span class="text-sm mt-1">Write a clean JavaScript function to find prime numbers</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat messages will be injected dynamically here -->
+        <div id="chatBubblesSpace" class="max-w-3xl mx-auto space-y-6"></div>
+
+      </div>
+
+      <!-- BOTTOM CONTROL & INPUT AREA -->
+      <div class="p-4 md:p-6 bg-gradient-to-t from-chatgptLight-main via-chatgptLight-main to-transparent dark:from-chatgptDark-main dark:via-chatgptDark-main dark:to-transparent border-t border-chatgptLight-border dark:border-chatgptDark-border">
+        
+        <div class="max-w-3xl mx-auto relative">
+          
+          <!-- Quick Status Indicator / Voice visualizer -->
+          <div id="statusIndicator" class="hidden text-xs text-center pb-2 flex items-center justify-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+            <span id="statusText" class="text-slate-400 font-medium">Listening to your voice...</span>
+          </div>
+
+          <!-- Bottom Floating Scroll Button -->
+          <button id="scrollBtn" onclick="scrollToBottom()" class="absolute -top-12 left-1/2 -translate-x-1/2 p-1.5 bg-white dark:bg-zinc-800 border border-slate-300 dark:border-slate-700 rounded-full shadow-lg transition-opacity duration-200 opacity-0 pointer-events-none hover:bg-slate-100 dark:hover:bg-zinc-700">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path></svg>
+          </button>
+
+          <!-- Main Input Container (ChatGPT layout) -->
+          <div class="flex items-end gap-2 bg-slate-100 dark:bg-zinc-800 rounded-2xl p-2 shadow-sm border border-slate-200 dark:border-zinc-700 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-transparent transition-all">
+            
+            <!-- Voice Input Button (Left aligned in input) -->
+            <button onclick="startVoice()" title="Voice input" class="p-2.5 rounded-xl hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-500 dark:text-slate-400 transition-colors">
+              <svg id="micIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"></path></svg>
+            </button>
+
+            <!-- Text Area / Input -->
+            <textarea id="userInput" rows="1" placeholder="Message Bharat AI..." class="flex-1 max-h-48 min-h-[2.5rem] bg-transparent resize-none py-2 px-1 focus:outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 text-[15px]" oninput="adjustTextareaHeight()"></textarea>
+
+            <!-- Send Button -->
+            <button onclick="sendMessage()" id="sendBtn" title="Send message" class="p-2.5 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-neutral-900 rounded-xl transition disabled:opacity-40 disabled:cursor-not-allowed">
+              <svg class="w-4 h-4 transform rotate-90" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+            
+          </div>
+
+          <!-- Bottom Footer Notice -->
+          <p class="text-[11px] text-center text-slate-400 dark:text-slate-500 mt-2.5">
+            Bharat AI can make mistakes. Consider checking important information.
+          </p>
+
+        </div>
+
+      </div>
+
+    </main>
+
   </div>
 
-  <!-- CHAT UI -->
-  <div class="chat" id="chat">
+  <!-- STYLED CUSTOM NOTIFICATION / NOTIFICATION BANNER -->
+  <div id="customToast" class="fixed bottom-4 right-4 z-50 flex items-center gap-3 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-2xl opacity-0 transform translate-y-10 pointer-events-none transition-all duration-300">
+    <span id="toastMessage">Copy successfully!</span>
+  </div>
 
-    <div class="topbar">
-      🇮🇳 Bharat AI
-      <div class="controls">
-        <button class="btn" onclick="toggleLang()">🌐</button>
-        <button class="btn" onclick="toggleDark()">🌙</button>
-        <button class="btn" onclick="clearChat()">🧹</button>
+  <!-- DEVELOPER SETTINGS MODAL -->
+  <div id="settingsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-zinc-800 max-w-md w-full overflow-hidden transition-all transform scale-95 opacity-0 duration-300" id="settingsModalBox">
+      <!-- Modal Header -->
+      <div class="p-4 border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between">
+        <h3 class="font-bold text-lg">Developer & API Settings</h3>
+        <button onclick="toggleSettingsModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <!-- Modal Body -->
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Groq Cloud API Key</label>
+          <input id="apiConfigKey" type="password" placeholder="Paste custom Groq Key (gsk_...)" class="w-full p-2.5 bg-slate-100 dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-saffron">
+          <span class="text-[10px] text-slate-400 mt-1 block">Your API keys are stored only locally in your web browser.</span>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Model Engine</label>
+          <select id="apiConfigModel" class="w-full p-2.5 bg-slate-100 dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-saffron">
+            <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant (Ultra Fast)</option>
+            <option value="llama-3.3-70b-specdec">Llama 3.3 70B SpecDec (Smartest)</option>
+            <option value="mixtral-8x7b-32768">Mixtral 8x7B (Complex Context)</option>
+          </select>
+        </div>
+        <div class="h-[1px] bg-slate-200 dark:bg-zinc-800 my-2"></div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Reset App Settings</label>
+          <button onclick="factoryReset()" class="w-full p-2.5 text-center text-sm border border-red-500 text-red-500 font-semibold rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 transition-all">
+            Clear All History & Cache
+          </button>
+        </div>
+      </div>
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 dark:bg-zinc-800/40 border-t border-slate-200 dark:border-zinc-800 flex justify-end gap-2">
+        <button onclick="toggleSettingsModal()" class="px-4 py-2 text-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 font-medium">Cancel</button>
+        <button onclick="saveApiSettings()" class="px-4 py-2 text-sm bg-gradient-to-r from-saffron to-greenIndia text-white font-semibold rounded-lg shadow hover:opacity-90 transition">Save Changes</button>
       </div>
     </div>
-
-    <div class="messages" id="messages"></div>
-
-    <button id="scrollBtn" onclick="scrollToBottom()">🔽</button>
-
-    <div class="input-area">
-      <button class="mic-btn" onclick="startVoice()">🎤</button>
-      <input id="userInput" type="text" placeholder="Ask Bharat AI..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
-
   </div>
 
-</div>
+  <script>
+    // Config fallback logic
+    const DEFAULT_GROQ_KEY = "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";
+    
+    // Core Application State
+    let state = {
+      apiKey: localStorage.getItem("bharat_api_key") || DEFAULT_GROQ_KEY,
+      model: localStorage.getItem("bharat_api_model") || "llama-3.1-8b-instant",
+      currentLanguage: localStorage.getItem("bharat_api_lang") || "en", // "en" or "hi"
+      conversations: JSON.parse(localStorage.getItem("bharat_threads")) || [],
+      activeConversationId: localStorage.getItem("bharat_active_id") || null,
+      isDarkMode: localStorage.getItem("bharat_dark_mode") === "true"
+    };
 
-<script>
-const GROQ_API_KEY = "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";
+    // DOM Elements Cache
+    const el = {
+      sidebar: document.getElementById("sidebar"),
+      sidebarBackdrop: document.getElementById("sidebarBackdrop"),
+      historyList: document.getElementById("historyList"),
+      langText: document.getElementById("langText"),
+      messagesContainer: document.getElementById("messagesContainer"),
+      welcomeScreen: document.getElementById("welcomeScreen"),
+      chatBubblesSpace: document.getElementById("chatBubblesSpace"),
+      userInput: document.getElementById("userInput"),
+      statusIndicator: document.getElementById("statusIndicator"),
+      statusText: document.getElementById("statusText"),
+      scrollBtn: document.getElementById("scrollBtn"),
+      toast: document.getElementById("customToast"),
+      toastMessage: document.getElementById("toastMessage"),
+      settingsModal: document.getElementById("settingsModal"),
+      settingsModalBox: document.getElementById("settingsModalBox"),
+      apiConfigKey: document.getElementById("apiConfigKey"),
+      apiConfigModel: document.getElementById("apiConfigModel"),
+      currentModelLabel: document.getElementById("currentModelLabel"),
+      sendBtn: document.getElementById("sendBtn")
+    };
 
-let currentLang = "en";
+    // Initialize Page
+    window.addEventListener("DOMContentLoaded", () => {
+      // Configure modern marked settings safely
+      try {
+        marked.use({
+          breaks: true,
+          gfm: true
+        });
+      } catch (err) {
+        console.warn("Could not set up default marked options: ", err);
+      }
 
-const landing = document.getElementById("landing");
-const chat = document.getElementById("chat");
-const messagesDiv = document.getElementById("messages");
-const userInput = document.getElementById("userInput");
-const scrollBtn = document.getElementById("scrollBtn");
+      // Synchronize Visual States from localStorage
+      if (state.isDarkMode) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      
+      updateLangLabel();
+      el.currentModelLabel.innerText = state.model === 'llama-3.1-8b-instant' ? "Bharat AI (Groq Speed)" : state.model;
+      
+      // Auto-focus on start
+      el.userInput.focus();
 
-/* START CHAT */
+      // Check for past sessions
+      if (state.conversations.length === 0) {
+        createNewConversation();
+      } else {
+        renderHistoryList();
+        loadConversation(state.activeConversationId);
+      }
 
-function startChat() {
-  landing.style.display = "none";
-  chat.style.display = "flex";
-  loadHistory();
-  userInput.focus();
-}
-
-/* DARK MODE */
-
-function toggleDark() {
-  document.body.classList.toggle("dark");
-}
-
-/* LANGUAGE */
-
-function toggleLang() {
-  currentLang = currentLang === "en" ? "hi" : "en";
-  alert("Language: " + (currentLang === "en" ? "English" : "Hindi"));
-}
-
-/* ADD BUBBLE */
-
-function addBubble(text, className) {
-  const div = document.createElement("div");
-  div.className = "bubble " + className;
-  div.innerText = text;
-  messagesDiv.appendChild(div);
-  saveHistory();
-  return div;
-}
-
-/* FAST + STABLE TYPING */
-
-function typeTextFast(element, text) {
-  let i = 0;
-  const speed = 5;
-
-  const interval = setInterval(() => {
-    element.innerText += text.slice(i, i + 2);
-    i += 2;
-
-    autoScroll();
-
-    if (i >= text.length) {
-      clearInterval(interval);
-      autoScroll();
-      saveHistory();
-    }
-  }, speed);
-}
-
-/* SEND MESSAGE */
-
-async function sendMessage() {
-  const text = userInput.value.trim();
-  if (!text) return;
-
-  addBubble(text, "user");
-  userInput.value = "";
-
-  const aiBubble = addBubble("Thinking...", "ai");
-
-  try {
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + GROQ_API_KEY
-      },
-      body: JSON.stringify({
-        model: "llama-3.1-8b-instant",
-        messages: [
-          {
-            role: "system",
-            content: currentLang === "hi"
-              ? "तुम भारत एआई हो, हमेशा हिंदी में उत्तर दो।"
-              : "You are Bharat AI, reply in English."
-          },
-          { role: "user", content: text }
-        ]
-      })
+      // Scroll handler
+      el.messagesContainer.addEventListener("scroll", handleScrollButtonVisibility);
     });
 
-    const data = await response.json();
+    // Handle Keyboard Shortcuts
+    document.addEventListener("keydown", (e) => {
+      // Ctrl+N for new chat
+      if (e.ctrlKey && e.key === 'n') {
+        e.preventDefault();
+        createNewConversation();
+      }
+      // Enter on Textarea
+      if (e.key === "Enter" && !e.shiftKey) {
+        if (window.innerWidth > 768) { // Only direct send on desktop with Enter
+          e.preventDefault();
+          sendMessage();
+        }
+      }
+    });
 
-    if (data.error) {
-      aiBubble.innerText = "Error: " + data.error.message;
-      return;
+    // Adaptive Input Box Height calculation
+    function adjustTextareaHeight() {
+      el.userInput.style.height = "auto";
+      el.userInput.style.height = el.userInput.scrollHeight + "px";
     }
 
-    const aiText = data.choices[0].message.content;
-    aiBubble.innerText = "";
-    typeTextFast(aiBubble, aiText);
+    // Toggle Mobile Sidebar
+    function toggleSidebar() {
+      el.sidebar.classList.toggle("-translate-x-full");
+      el.sidebarBackdrop.classList.toggle("hidden");
+    }
 
-  } catch (err) {
-    aiBubble.innerText = "Error connecting to AI.";
-  }
-}
+    // Toggle Dark Mode
+    function toggleDark() {
+      state.isDarkMode = !state.isDarkMode;
+      localStorage.setItem("bharat_dark_mode", state.isDarkMode);
+      document.documentElement.classList.toggle("dark", state.isDarkMode);
+    }
 
-/* ENTER KEY */
+    // Toggle Language (EN <-> HI)
+    function toggleLang() {
+      state.currentLanguage = state.currentLanguage === "en" ? "hi" : "en";
+      localStorage.setItem("bharat_api_lang", state.currentLanguage);
+      updateLangLabel();
+      showToast(`Language changed to ${state.currentLanguage === "en" ? "English" : "Hindi"}`);
+    }
 
-userInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") sendMessage();
-});
+    function updateLangLabel() {
+      el.langText.innerText = state.currentLanguage === "en" ? "English" : "Hindi (हिंदी)";
+      el.userInput.placeholder = state.currentLanguage === "en" ? "Ask Bharat AI..." : "भारत एआई से कुछ पूछें...";
+    }
 
-/* SCROLL MANAGEMENT */
+    // Create New Conversation Flow
+    function createNewConversation() {
+      const newId = 'thread_' + Date.now();
+      const newThread = {
+        id: newId,
+        title: state.currentLanguage === 'en' ? "New Chat" : "नई बातचीत",
+        messages: [],
+        timestamp: Date.now()
+      };
+      
+      state.conversations.unshift(newThread);
+      state.activeConversationId = newId;
+      saveState();
+      
+      renderHistoryList();
+      loadConversation(newId);
 
-function autoScroll() {
-  const threshold = 80;
-  const distanceFromBottom =
-    messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight;
+      // Hide sidebar on mobile once created
+      if (window.innerWidth < 1024) {
+        toggleSidebar();
+      }
+    }
 
-  if (distanceFromBottom < threshold) {
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }
-}
+    // Delete Thread Flow
+    function deleteConversation(id, event) {
+      if (event) event.stopPropagation();
+      state.conversations = state.conversations.filter(c => c.id !== id);
+      
+      if (state.activeConversationId === id) {
+        state.activeConversationId = state.conversations.length > 0 ? state.conversations[0].id : null;
+      }
 
-function scrollToBottom() {
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
+      if (state.conversations.length === 0) {
+        createNewConversation();
+      } else {
+        saveState();
+        renderHistoryList();
+        loadConversation(state.activeConversationId);
+      }
+      showToast("Conversation deleted");
+    }
 
-/* SHOW / HIDE SCROLL BUTTON */
+    // Load Chosen Thread
+    function loadConversation(id) {
+      state.activeConversationId = id;
+      localStorage.setItem("bharat_active_id", id);
+      
+      const activeThread = state.conversations.find(c => c.id === id);
+      if (!activeThread) return;
 
-messagesDiv.addEventListener("scroll", () => {
-  const distanceFromBottom =
-    messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight;
+      // Highlight in sidebar
+      document.querySelectorAll('.chat-thread-btn').forEach(btn => {
+        btn.classList.remove('bg-chatgptLight-hover', 'dark:bg-chatgptDark-hover', 'font-semibold');
+      });
+      const currentBtn = document.getElementById(`btn_${id}`);
+      if (currentBtn) {
+        currentBtn.classList.add('bg-chatgptLight-hover', 'dark:bg-chatgptDark-hover', 'font-semibold');
+      }
 
-  if (distanceFromBottom > 120) {
-    scrollBtn.style.display = "block";
-  } else {
-    scrollBtn.style.display = "none";
-  }
-});
+      // Render Messages
+      el.chatBubblesSpace.innerHTML = "";
+      if (activeThread.messages.length === 0) {
+        el.welcomeScreen.classList.remove('hidden');
+        el.welcomeScreen.classList.add('flex');
+      } else {
+        el.welcomeScreen.classList.remove('flex');
+        el.welcomeScreen.classList.add('hidden');
+        
+        activeThread.messages.forEach(msg => {
+          appendMessageBubble(msg.role, msg.content, false);
+        });
+      }
+      scrollToBottom();
+    }
 
-/* CLEAR CHAT */
+    // Render Conversation List in Sidebar
+    function renderHistoryList() {
+      el.historyList.innerHTML = "";
+      state.conversations.forEach(c => {
+        const item = document.createElement("div");
+        item.id = `btn_${c.id}`;
+        item.className = `chat-thread-btn flex items-center justify-between group px-3 py-2 text-sm rounded-lg cursor-pointer hover:bg-chatgptLight-hover dark:hover:bg-chatgptDark-hover transition ${c.id === state.activeConversationId ? 'bg-chatgptLight-hover dark:bg-chatgptDark-hover font-semibold' : ''}`;
+        item.setAttribute("onclick", `loadConversation('${c.id}')`);
+        
+        item.innerHTML = `
+          <div class="flex items-center gap-2.5 truncate w-full pr-2">
+            <svg class="w-4 h-4 text-slate-400 group-hover:text-slate-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+            <span class="truncate text-slate-700 dark:text-slate-300">${escapeHtml(c.title)}</span>
+          </div>
+          <button onclick="deleteConversation('${c.id}', event)" class="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-red-500/10 text-slate-400 hover:text-red-500 transition shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+          </button>
+        `;
+        el.historyList.appendChild(item);
+      });
+    }
 
-function clearChat() {
-  if (!confirm("Clear entire chat?")) return;
-  messagesDiv.innerHTML = "";
-  localStorage.removeItem("bharat_chat");
-}
+    // Helper Utility: Escape HTML
+    function escapeHtml(text) {
+      return text ? text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+    }
 
-/* SAVE + LOAD HISTORY */
+    // Append Message Bubble with standard ChatGPT aesthetic
+    function appendMessageBubble(role, content, shouldAnimate = false) {
+      const bubble = document.createElement("div");
+      bubble.className = `flex w-full ${role === 'user' ? 'justify-end' : 'justify-start'} animate-fadeIn`;
+      
+      const isUser = role === 'user';
+      const parsedMarkdown = isUser ? escapeHtml(content) : marked.parse(content);
+      
+      bubble.innerHTML = `
+        <div class="flex items-start gap-4 max-w-3xl w-full px-4 md:px-0 py-2">
+          <!-- Avatar Icon -->
+          <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isUser ? 'bg-indigo-600 text-white' : 'bg-gradient-to-tr from-saffron to-greenIndia text-white'}">
+            ${isUser ? '👤' : '🇮🇳'}
+          </div>
+          <!-- Message Body container -->
+          <div class="flex-1 overflow-hidden">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-semibold text-slate-500">${isUser ? 'You' : 'Bharat AI'}</span>
+              ${!isUser ? `<button onclick="speakText(this, \`${escapeJsString(content)}\`)" class="text-slate-400 hover:text-saffron transition-all p-1" title="Read Aloud"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z"></path></svg></button>` : ''}
+              ${!isUser ? `<button onclick="copyToClipboard(this, \`${escapeJsString(content)}\`)" class="text-slate-400 hover:text-green-600 transition-all p-1" title="Copy to clipboard"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg></button>` : ''}
+            </div>
+            <!-- Dynamic Content Output -->
+            <div class="${isUser ? '' : 'prose max-w-none dark:prose-invert'} text-slate-800 dark:text-zinc-100 text-[15px] leading-relaxed break-words" id="${shouldAnimate ? 'typingTarget' : ''}">
+              ${shouldAnimate ? '' : parsedMarkdown}
+            </div>
+          </div>
+        </div>
+      `;
 
-function saveHistory() {
-  localStorage.setItem("bharat_chat", messagesDiv.innerHTML);
-}
+      el.chatBubblesSpace.appendChild(bubble);
+      
+      // Auto highlight code snippets loaded from conversation history immediately
+      if (!isUser && !shouldAnimate) {
+        bubble.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightElement(block);
+        });
+      }
 
-function loadHistory() {
-  const saved = localStorage.getItem("bharat_chat");
-  if (saved) {
-    messagesDiv.innerHTML = saved;
-    scrollToBottom();
-  }
-}
+      scrollToBottom();
+      return bubble;
+    }
 
-/* 🎤 VOICE INPUT (RESTORED) */
+    // Escape characters in JS strings to prevent breaking HTML inline attributes
+    function escapeJsString(str) {
+      return str.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$').replace(/"/g, '\\"').replace(/'/g, "\\'");
+    }
 
-function startVoice() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    alert("Speech recognition not supported in this browser.");
-    return;
-  }
+    // Typewriter effect for AI generated messages
+    function typeResponseText(targetElement, fullContentText) {
+      let currentIdx = 0;
+      const charactersPerTick = 3;
+      const speedMs = 15;
 
-  const recognition = new SpeechRecognition();
-  recognition.lang = currentLang === "hi" ? "hi-IN" : "en-US";
+      // Parse markdown dynamically as we build the text
+      const interval = setInterval(() => {
+        currentIdx += charactersPerTick;
+        const subText = fullContentText.slice(0, currentIdx);
+        targetElement.innerHTML = marked.parse(subText);
+        
+        // Auto highlights newly added code segments
+        targetElement.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightElement(block);
+        });
 
-  recognition.onresult = (event) => {
-    const text = event.results[0][0].transcript;
-    userInput.value = text;
-    sendMessage();
-  };
+        autoScrollOnIncoming();
 
-  recognition.start();
-}
-</script>
+        if (currentIdx >= fullContentText.length) {
+          clearInterval(interval);
+          targetElement.innerHTML = marked.parse(fullContentText);
+          targetElement.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+          });
+          targetElement.removeAttribute("id"); // Remove styling ID tag
+          scrollToBottom();
+          saveState();
+        }
+      }, speedMs);
+    }
 
+    // Quick Suggestion Click Action
+    function handleSuggestion(query) {
+      el.userInput.value = query;
+      adjustTextareaHeight();
+      sendMessage();
+    }
+
+    // Main AI Messaging Logic
+    async function sendMessage() {
+      const userText = el.userInput.value.trim();
+      if (!userText) return;
+
+      // Get Current Thread
+      const activeThread = state.conversations.find(c => c.id === state.activeConversationId);
+      if (!activeThread) return;
+
+      // Update Screen
+      el.welcomeScreen.classList.add("hidden");
+      el.welcomeScreen.classList.remove("flex");
+
+      // Save user prompt
+      activeThread.messages.push({ role: 'user', content: userText });
+      appendMessageBubble('user', userText, false);
+
+      // Clear main box
+      el.userInput.value = "";
+      adjustTextareaHeight();
+
+      // Set conversation title dynamically on first query
+      if (activeThread.messages.length === 1) {
+        const generatedTitle = userText.split(" ").slice(0, 4).join(" ") + "...";
+        activeThread.title = generatedTitle;
+        renderHistoryList();
+      }
+
+      // Add temporary Typing Indicator Bubble (Note: passing true for animation tag)
+      const loadingBubble = appendMessageBubble('assistant', '', true);
+      const contentContainer = loadingBubble.querySelector('#typingTarget');
+      contentContainer.innerHTML = `<div class="flex items-center gap-1.5 h-6"><div class="dot-flashing text-saffron"></div></div>`;
+      
+      // Disable Send controls
+      el.sendBtn.disabled = true;
+
+      try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + state.apiKey
+          },
+          body: JSON.stringify({
+            model: state.model,
+            messages: [
+              {
+                role: "system",
+                content: state.currentLanguage === "hi"
+                  ? "तुम भारत एआई हो, हमेशा हिंदी में उत्तर दो। सुंदर उत्तर लिखो और साफ-सुथरे हिंदी में बातचीत करो।"
+                  : "You are Bharat AI, a highly intelligent and professional assistant made for India. Always reply in clear structured English. Use bold styling, simple paragraphs and formatted lists for clarity."
+              },
+              ...activeThread.messages.map(m => ({ role: m.role, content: m.content }))
+            ]
+          })
+        });
+
+        const data = await response.json();
+        
+        if (data.error) {
+          contentContainer.innerHTML = `<span class="text-red-500 font-semibold">Error: ${data.error.message}</span>`;
+          el.sendBtn.disabled = false;
+          return;
+        }
+
+        const aiOutputText = data.choices[0].message.content;
+        
+        // Save output to historical thread
+        activeThread.messages.push({ role: 'assistant', content: aiOutputText });
+        saveState();
+
+        // Clear loading flashing dots and initiate typewriter effect
+        contentContainer.innerHTML = "";
+        typeResponseText(contentContainer, aiOutputText);
+
+      } catch (err) {
+        contentContainer.innerHTML = `<span class="text-red-500 font-semibold">Could not establish contact with AI Engine. Verify API configurations.</span>`;
+      } finally {
+        el.sendBtn.disabled = false;
+      }
+    }
+
+    // Text to Speech (Premium Feature)
+    function speakText(btn, text) {
+      if ('speechSynthesis' in window) {
+        // Cancel ongoing speak speech first
+        window.speechSynthesis.cancel();
+
+        // Strip HTML/Markdown highlights
+        const plainText = text.replace(/[*#`_\-]/g, '');
+        const utterance = new SynthesisUtterance ? new SpeechSynthesisUtterance(plainText) : new SpeechSynthesisUtterance(plainText);
+        
+        // Dynamically select accent match
+        if (state.currentLanguage === 'hi') {
+          utterance.lang = 'hi-IN';
+        } else {
+          utterance.lang = 'en-IN'; // Elegant Indian English accent
+        }
+
+        // Change button visual temporarily to show playing feedback
+        const originalIcon = btn.innerHTML;
+        btn.innerHTML = `<svg class="w-3.5 h-3.5 text-saffron animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>`;
+        
+        utterance.onend = () => {
+          btn.innerHTML = originalIcon;
+        };
+
+        window.speechSynthesis.speak(utterance);
+      } else {
+        showToast("Speech synthesis not supported in this device.");
+      }
+    }
+
+    // Voice Input via Speech Recognition (Enhanced with UI Feedback)
+    function startVoice() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        showToast("Speech recognition not supported in this web browser.");
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = state.currentLanguage === "hi" ? "hi-IN" : "en-IN";
+      recognition.interimResults = false;
+
+      recognition.onstart = () => {
+        el.statusIndicator.classList.remove("hidden");
+        el.statusText.innerText = state.currentLanguage === 'hi' ? "बोलिए... सुन रहा हूँ" : "Listening to your voice...";
+        document.getElementById("micIcon").classList.add("text-red-500");
+      };
+
+      recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        el.userInput.value = text;
+        adjustTextareaHeight();
+        showToast("Captured voice audio input");
+      };
+
+      recognition.onerror = () => {
+        showToast("Voice capture timed out. Try again.");
+      };
+
+      recognition.onend = () => {
+        el.statusIndicator.classList.add("hidden");
+        document.getElementById("micIcon").classList.remove("text-red-500");
+      };
+
+      recognition.start();
+    }
+
+    // Save Application States
+    function saveState() {
+      localStorage.setItem("bharat_threads", JSON.stringify(state.conversations));
+      localStorage.setItem("bharat_active_id", state.activeConversationId);
+    }
+
+    // Copy to Clipboard (Premium fallback function)
+    function copyToClipboard(btn, text) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Copied content to clipboard!");
+      } catch (err) {
+        showToast("Failed to copy code.");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // Share link toast
+    function copyAppUrl() {
+      const dummyUrl = window.location.href;
+      const textarea = document.createElement("textarea");
+      textarea.value = dummyUrl;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      showToast("App share link copied!");
+    }
+
+    // Display Custom Elegant Toast Alerts
+    function showToast(message) {
+      el.toastMessage.innerText = message;
+      el.toast.classList.remove("opacity-0", "translate-y-10", "pointer-events-none");
+      el.toast.classList.add("opacity-100", "translate-y-0");
+
+      setTimeout(() => {
+        el.toast.classList.add("opacity-0", "translate-y-10", "pointer-events-none");
+        el.toast.classList.remove("opacity-100", "translate-y-0");
+      }, 3000);
+    }
+
+    // Clean viewport reset
+    function confirmClearCurrentChat() {
+      const activeThread = state.conversations.find(c => c.id === state.activeConversationId);
+      if (!activeThread) return;
+
+      if (activeThread.messages.length === 0) return;
+      
+      activeThread.messages = [];
+      activeThread.title = state.currentLanguage === 'en' ? "Empty Chat" : "खाली बातचीत";
+      
+      saveState();
+      renderHistoryList();
+      loadConversation(state.activeConversationId);
+      showToast("Current chat cleared.");
+    }
+
+    // Settings Modal togglers
+    function toggleSettingsModal() {
+      const isOpen = !el.settingsModal.classList.contains("hidden");
+      if (isOpen) {
+        el.settingsModalBox.classList.add("scale-95", "opacity-0");
+        setTimeout(() => el.settingsModal.classList.add("hidden"), 200);
+      } else {
+        // Pre-fill key and config states
+        el.apiConfigKey.value = state.apiKey === DEFAULT_GROQ_KEY ? "" : state.apiKey;
+        el.apiConfigModel.value = state.model;
+        
+        el.settingsModal.classList.remove("hidden");
+        setTimeout(() => el.settingsModalBox.classList.remove("scale-95", "opacity-0"), 50);
+      }
+    }
+
+    // Save Settings
+    function saveApiSettings() {
+      const keyVal = el.apiConfigKey.value.trim();
+      const modelVal = el.apiConfigModel.value;
+
+      state.apiKey = keyVal === "" ? DEFAULT_GROQ_KEY : keyVal;
+      state.model = modelVal;
+
+      localStorage.setItem("bharat_api_key", keyVal === "" ? "" : keyVal);
+      localStorage.setItem("bharat_api_model", modelVal);
+
+      el.currentModelLabel.innerText = modelVal === 'llama-3.1-8b-instant' ? "Bharat AI (Groq Speed)" : modelVal;
+      
+      toggleSettingsModal();
+      showToast("Settings saved successfully.");
+    }
+
+    // Hard Factory Reset
+    function factoryReset() {
+      localStorage.clear();
+      showToast("Cache fully cleared. Reloading...");
+      setTimeout(() => location.reload(), 1500);
+    }
+
+    // AutoScroll only when user is near bottom
+    function autoScrollOnIncoming() {
+      const threshold = 150;
+      const distanceFromBottom = el.messagesContainer.scrollHeight - el.messagesContainer.scrollTop - el.messagesContainer.clientHeight;
+      if (distanceFromBottom < threshold) {
+        el.messagesContainer.scrollTop = el.messagesContainer.scrollHeight;
+      }
+    }
+
+    function scrollToBottom() {
+      el.messagesContainer.scrollTop = el.messagesContainer.scrollHeight;
+    }
+
+    function handleScrollButtonVisibility() {
+      const distanceFromBottom = el.messagesContainer.scrollHeight - el.messagesContainer.scrollTop - el.messagesContainer.clientHeight;
+      if (distanceFromBottom > 150) {
+        el.scrollBtn.classList.remove("opacity-0", "pointer-events-none");
+      } else {
+        el.scrollBtn.classList.add("opacity-0", "pointer-events-none");
+      }
+    }
+  </script>
 </body>
 </html>
